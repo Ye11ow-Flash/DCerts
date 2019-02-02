@@ -12,4 +12,4 @@ if(typeof window !== 'undefined' && typeof window.web3 !== 'undefined'){
 	web3 = new Web3(provider);
 }
 
-module.exports = web3;
+export default web3;

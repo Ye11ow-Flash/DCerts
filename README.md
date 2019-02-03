@@ -36,12 +36,7 @@ npm run start
 
 ## Authors
 
-* **Prafful Javare** - *Initial work* - [PurpleBooth](https://github.com/profgrammer)
-* **Divya Khetan** - *Initial work* - [PurpleBooth](https://github.com/divyakhetan)
-* **Jaineel Shah** - *Initial work* - [PurpleBooth](https://github.com/Ye11ow-Flash)
+* **Prafful Javare** (https://github.com/profgrammer)
+* **Divya Khetan** (https://github.com/divyakhetan)
+* **Jaineel Shah** (https://github.com/Ye11ow-Flash)
 
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc

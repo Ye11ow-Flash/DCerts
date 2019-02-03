@@ -4,6 +4,7 @@ import web3 from '../Ethereum/web3';
 import certificate from '../Ethereum/Contracts/certificateInstance';
 import hash from 'object-hash';
 import Link from 'next/link';
+
 // import InputGroup from 'react-bootstrap';
 // import Button from 'react-bootstrap/lib/Button';
 // import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -24,6 +25,7 @@ import Link from 'next/link';
 var	 x = "";
 var pk = "";
 var sign = "";
+var cert = {};
 class CertificateForm extends Component{
 
 	// static async getInitialProps(){
@@ -47,7 +49,8 @@ class CertificateForm extends Component{
 			date: "",
 			sign: "",
 			txHash: "",
-			done: false
+			done: false,
+			cert: cert
 		};
 
 		
@@ -61,16 +64,17 @@ class CertificateForm extends Component{
 	// 	// console.log(this.state.accounts[0]);
 	// 	var signed = await web3.eth.signTypedData(hashedCert, this.state.accounts[0]);
 	// 	// console.log("signed");
-	// 	await certificate.methods.upload(hashedCert).send({
-	// 		from: this.state.accounts[0]
-	// 	}).on('transactionHash', function(txHash){
-	// 		x = txHash;
-	// 	});
+		// await certificate.methods.upload(hashedCert).send({
+		// 	from: this.state.accounts[0]
+		// }).on('transactionHash', function(txHash){
+		// 	x = txHash;
+		// });
 	
 	// }
 
 	async signAndSend(){
-		var cert = {
+		var that = this;
+		cert = {
 			logo: this.state.logo,
 			sign: this.state.sign,
 			fname: this.state.fname,
@@ -80,20 +84,58 @@ class CertificateForm extends Component{
 			cname: this.state.cname
 		}
 		var hashedCert = hash(cert);
-		console.log("signing");
-		console.log(hashedCert);
+		var fromAccount = this.state.accounts[0];
+		var params = [hashedCert, fromAccount];
+  		var method = 'personal_sign';
 		// console.log(this.state.accounts[0]);
 		// var signed = await web3.eth.signTypedData(hashedCert, this.state.accounts[0]);
 		// console.log("signed");
-		await certificate.methods.upload(hashedCert).send({
-			from: this.state.accounts[0]
-		}).on('transactionHash', function(txHash){
-			x = txHash;
-			// alert('transaction successful. ');
-			cert.txHash = x;
-		});
+		// await certificate.methods.upload(hashedCert).send({
+		// 	from: this.state.accounts[0]
+		// }).on('transactionHash', function(txHash){
+		// 	x = txHash;
+		// 	// alert('transaction successful. ');
+		// 	cert.txHash = x;
+		// });
+		var signedCert = "";
+		web3.currentProvider.sendAsync({
+		    method,
+		    params,
+		    fromAccount,
+		  }, async function (err, result) {
+		    if (err) return console.error(err)
+		    if (result.error) return console.error(result.error)
+		    console.log('PERSONAL SIGNED:' + JSON.stringify(result.result))
+			signedCert = JSON.stringify(result.result);
+
+			await certificate.methods.upload(hashedCert).send({
+				from: fromAccount
+			}).on('transactionHash', function(txHash){
+				console.log(txHash);
+				x = txHash;
+				cert.txHash = x;
+				cert.digitalSignature = signedCert;
+				cert.pk = fromAccount;
+				console.log(cert.txHash);
+				that.setState({cert: cert, done: true});
+			});
+		    // console.log('recovering...')
+		    // const msgParams = { data: msg }
+		    // msgParams.sig = result.result
+		    // console.dir({ msgParams })
+		    // const recovered = sigUtil.recoverPersonalSignature(msgParams)
+		    // console.dir({ recovered })
+
+		    // if (recovered === from ) {
+		    //   console.log('SigUtil Successfully verified signer as ' + from)
+		    // } else {
+		    //   console.dir(recovered)
+		    //   console.log('SigUtil Failed to verify signer when comparing ' + recovered.result + ' to ' + from)
+		    //   console.log('Failed, comparing %s to %s', recovered, from)
+		}
+		)
 		
-		this.setState({cert: cert, done: true});
+		
 	}
 
 
@@ -199,8 +241,6 @@ class CertificateForm extends Component{
 			      	</Col>
 			      	</Row>
 			      	</FormGroup>
-			      
-
 			      	</Form>
 
 			      	
@@ -210,7 +250,7 @@ class CertificateForm extends Component{
 					  className="pull-right btn btn-success"
 					  style={{ margin: 10 }}
 					  href={`data:text/json;charset=utf-8,${encodeURIComponent(
-					  JSON.stringify(this.state.cert)
+					  JSON.stringify(cert)
 					  )}`}
 					  download="certificate.json"
 					> Download Data as JSON</a>

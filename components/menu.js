@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
-// import { BrowserRouter, Route, Switch, withRouter } from 'react-router-dom';
+import dynamic from 'next/dynamic';
+// import DynamicComponent = dynamic(() => import('../components/loginform')
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { Container, Button, Form, FormGroup, Label, Input, FormText, InputGroup, Col, Row} from 'reactstrap';
 import web3 from '../Ethereum/web3';
 import certificate from '../Ethereum/Contracts/certificateInstance';
 import hash from 'object-hash';
 import Link from 'next/link';
 import Loginform from './loginform';
-import MenuCert from './menu';
 import Verify from './verify';
+import Router from 'next/router';
+
+var history = createMemoryHistory();
+
 class CertMenu extends Component{
 
+
 	constuctor() {
-  this.routeChange = this.routeChange.bind(this);
-   }
+  		this.routeChange = this.routeChange.bind(this);
+   	}
    routeChange(){
     let path = `./loginform.js`;
     this.props.history.push(path);
@@ -27,9 +34,7 @@ class CertMenu extends Component{
 				<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
 
 				<Form>
-
-					<FormGroup>
-					
+					<FormGroup>	
 			      	<Row>
 			      	<Col md = {{size:6, offset:2}}>
 			      	<Label></Label>
@@ -56,26 +61,41 @@ class CertMenu extends Component{
  					</Col>
 			      	</Row>
 			      	</FormGroup>
-					<FormGroup>
 
+					<FormGroup>
 			      	<Row>
 			      	<Col md = {{size:6, offset:3}}>
 			      	<Button size = "lg" color="info"onClick={this.routeChange}>Create Certificate</Button> <br />
 			      	</Col>
 			      	<Col md = {{size:6, offset:5}}>
-			      	<Button size = "lg" color="warning" onClick={() => this.signAndSend()}>View Certificate</Button> <br />
+			      	<Button size = "lg" color="warning"onClick={this.routeChange}>View Certificate</Button> <br />
 			      	</Col>
 			      	<Col md = {{size:6, offset:7}}>
-			      	<Button size = "lg" color="success" onClick={() => this.signAndSend()}>Verify Certificate</Button> <br />
+			      	<Button size = "lg" color="success" onClick={this.routeChange}>Verify Certificate</Button> <br />
 			      	</Col>
 			      	</Row>
 			      	</FormGroup>
+
+			      	
+
 				</Form>
+				
+
 			</div>
 			</div>
+
 		);
 
 	}
 }
 
 export default CertMenu;
+
+
+// <BrowserRouter history={history}>
+// 			      <Switch>
+// 			          <Route exact path="/" component={CertMenu} />
+// 			          <Route path="/loginform" component={Loginform} />
+// 			          <Route path="/verify" component={Verify} />
+// 			      </Switch>
+// 			  	</BrowserRouter>

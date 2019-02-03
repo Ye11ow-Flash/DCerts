@@ -46,7 +46,8 @@ class VerifyCert extends Component{
 		var transaction = await web3.eth.getTransaction(h);
 		var functionSignature = web3.eth.abi.encodeFunctionSignature('upload(string)');
 		var input2 = web3.eth.abi.decodeParameter('string', transaction.input.replace(functionSignature, ''));
-		console.log(hashedCert == input2);
+		if(hashedCert == input2) alert('Success! The certificate is verified.');
+		else alert("Failure! The certificate is not verified.");
 	}
 
 	render(){

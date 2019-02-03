@@ -22,7 +22,9 @@ class VerifyCert extends Component{
 		super(props);
 
 		this.state = {
-			tx: tx
+			tx: {
+				logo: "abcd"
+			}
 		}
 	}
 
@@ -46,8 +48,8 @@ class VerifyCert extends Component{
 		var transaction = await web3.eth.getTransaction(h);
 		var functionSignature = web3.eth.abi.encodeFunctionSignature('upload(string)');
 		var input2 = web3.eth.abi.decodeParameter('string', transaction.input.replace(functionSignature, ''));
-		if(hashedCert == input2) alert('Success! The certificate is verified.');
-		else alert("Failure! The certificate is not verified.");
+		if(hashedCert == input2) alert("Verified.");
+		else alert("Not verified.");
 	}
 
 	render(){
@@ -72,12 +74,12 @@ class VerifyCert extends Component{
 					<FormGroup>
 					<Row>
 					<Col  sm = {{size:1, offset:2}}>
-						<Label value={this.state.tx.logo}
-			      		 /><br />
+						<Label
+			      		 >{this.state.tx.logo}</Label><br />
 					</Col>
 			      	<Col  sm = {{size:'auto', offset:0}}>
-			      	<Label value={this.state.tx.cname}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.cname}</Label><br />
 			      	</Col>	
 			      	</Row>
 			      	</FormGroup>
@@ -95,12 +97,12 @@ class VerifyCert extends Component{
 			      	<FormGroup>
 			      	<Row>
 			      	<Col  sm = {{size:'auto', offset:3}}>
-			      	<Label value={this.state.tx.fname}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.fname}</Label><br />
 			      	</Col>
 			      	<Col  sm = {{size:'auto', offset:1}} >
-			      	<Label value={this.state.tx.lname}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.lname}</Label><br />
 			      	</Col>
 			      	</Row>
 			      	</FormGroup>
@@ -108,8 +110,8 @@ class VerifyCert extends Component{
 			      	<FormGroup>
 			      	<Row>
 			      	<Col sm = {{size:5, order:5, offset:3}}> 
-			      	<Label value={this.state.tx.desc}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.desc}</Label><br />
 					</Col>
 					</Row>
 					</FormGroup>
@@ -117,12 +119,12 @@ class VerifyCert extends Component{
 					<FormGroup>
 					<Row>
 					<Col  sm = {{size:'auto', offset:2}}>		      
-			      	<Label value={this.state.tx.date}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.date}</Label><br />
 			      	</Col>
 			      	<Col  sm = {{size:'auto', offset:3}}>	
-			      	<Label value={this.state.tx.sign}
-			      	/><br />
+			      	<Label 
+			      	>{this.state.tx.sign}</Label><br />
 			      	</Col>
 			      	</Row>
 			      	</FormGroup>

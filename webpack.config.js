@@ -1,6 +1,6 @@
 module.exports = {
 	entry: {
-		app: ["webpack/hot/dev-server", "./app/app.js"],
+		app: ["webpack/hot/dev-server", "./pages/index.js"],
 	},
 	output: {	
 		path: './app',
@@ -18,6 +18,13 @@ module.exports = {
 			{ test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
 			{ test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
 			{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
-	  ]
-	}
+	  ],
+	  rules: [
+	      {
+	        test: /\.css$/,
+	        use: ['style-loader', 'css-loader'],
+	      }
+	    ]
+	},
+
 };

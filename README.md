@@ -11,7 +11,7 @@ Clone the repository and install npm in that folder.
 
 ### Prerequisites
 
-Should have account on Metamask
+Should have account on Metamask <br />
 npm
 
 ### Installing
